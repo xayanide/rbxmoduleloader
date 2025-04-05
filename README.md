@@ -58,7 +58,8 @@ The `ModuleLoaderOptions` table allows you to configure the loader's behavior. T
 **Example Usage:**
 This will load all ModuleScripts inside `ReplicatedStorage`.
 
-> [!NOTE] For this example, write this as a `LocalScript` inside `StarterPlayer -> StarterPlayerScripts`
+>[!NOTE] For this example, write this as a `LocalScript` inside `StarterPlayer -> StarterPlayerScripts`
+
 ```lua
 local ReplicatedStorageService = game:GetService("ReplicatedStorage")
 local loadModules = require(ReplicatedStorageService.MainModule)
@@ -77,7 +78,8 @@ loadModules({ isShared = true })
 **Example Usage:**
 This will load all ModuleScripts inside `ServerScriptService` and `ServerStorage`.
 
-> [!NOTE] For this example, write this as a `Server Script` in `ServerScriptService`
+>[!NOTE] For this example, write this as a `Server Script` in `ServerScriptService`
+
 ```lua
 local ReplicatedStorageService = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
@@ -91,7 +93,7 @@ loadModules({
 
 ## Lifecycle Methods
 
-The loader supports two lifecycle methods that will be invoked on the modules after they are loaded (required):
+The loader supports two lifecycle methods that will be invoked in this order on the modules after they are loaded (required):
 1. `onModuleSetup`
     - `Description`: This method is called synchronously for each module after it is loaded.
     - `Purpose`: Use this to perform setup tasks on the module, like initializing variables or setting properties.
