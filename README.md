@@ -5,7 +5,7 @@ Features:
 - Loads modules dynamically, only when needed.
 - Loaded ModuleScripts implement lifecycle methods (hooks): `onModuleSetup` (synchronous) and `onModuleStart` (asynchronous).
 - Follows a specific design pattern when making ModuleScripts for the Client or Server but doesn't dictate the way you script.
-- Allows for both shared and non-shared (ModuleContainer) module storage, depending on whether the module should be available globally or locally.
+- Allows for both global (`shared`) and local (`ModuleContainer`) module storage, depending on whether the module should be available globally or locally.
 - Allows only loading module scripts from specific Instance's descendants.
 - Uses `xpcall` and `pcall` for safe module requiring, prevents the module loader from failing, with error handling that logs any failures to load modules.
 
@@ -84,7 +84,7 @@ The `ModuleLoaderOptions` table allows you to configure the loader's behavior. T
 `isShared` (optional)
   - `Type`: boolean?
   - `Default`: true
-  - `Description`: Determines if the loaded modules should be stored in the shared table (accessible globally) or in an isolated container (child of rbxmoduleloader "ModuleContainer"). When `isShared` is true, the modules are stored in the global shared table, meaning they can be accessed anywhere in the game depending on the runtime context.
+  - `Description`: Determines if the loaded modules should be stored in the `shared` dictionary table (accessible globally) or in an isolated local dictionary table (child of `rbxmoduleloader` which is "`ModuleContainer`"). When `isShared` is true, the modules are stored in the global shared table, meaning they can be accessed anywhere in the game depending on the runtime context.
 
 **Example Usage:**
 
