@@ -9,11 +9,11 @@ A module that loads and executes ModuleScripts from either ServerScriptService o
 
 - Allows for both global (`shared`) and local (`ModuleContainer`) module storage, depending on whether the module should be available globally or locally.
 
-- Allows only loading module scripts from specific Instance's descendants.
+- Allows only loading module scripts from specific Instances' descendants.
 
-- Uses `xpcall` and `pcall` for safe module requiring, prevents the module loader from failing, with error handling that logs any failures to load modules.
+- Uses `xpcall` and `pcall` for safe module requiring to prevent the module loader from failing, with error handling that logs any failures to load modules.
 
-- Supports loading `ObjectValue` instances that point to `ModuleScript` instances.
+- Supports loading modules from `ObjectValue` instances that point to `ModuleScript` instances.
 
 ## Prerequisites
 
