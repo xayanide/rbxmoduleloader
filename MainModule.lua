@@ -4,7 +4,6 @@ VERSION: v1.0.0
 rbxmoduleloader by xayanide (862645934) @ April 3, 2025 UTC+8
 This module is meant to only have simple features with the least overhead and complexity
 ]]
-local HttpService = game:GetService("HttpService")
 local RunService = game:GetService("RunService")
 local ServerScriptService = game:GetService("ServerScriptService")
 local ReplicatedStorageService = game:GetService("ReplicatedStorage")
@@ -14,8 +13,6 @@ export type ModuleLoaderOptions = {
     targetInstances: { Instance }?,
 }?
 
--- Yeah I agree, this is overkill for a simple purpose  - xaya
-local FORMATTED_UUID = string.gsub(HttpService:GenerateGUID(false), "-", "_")
 -- This aliasing is for to avoid a type error: Type Error: Unknown require: unsupported path
 local REQUIRE = require
 
@@ -29,13 +26,6 @@ local isServerRuntimeEnvironment = RunService:IsServer()
 
 local ModuleContainerModuleScript = script.ModuleContainer
 local localDictionary = REQUIRE(ModuleContainerModuleScript)
-
---[[
-Since scripts can have similar names, use UUID and attributes as a reliable distinguisher at runtime
-This prevents the ModuleLoader and ModuleContainer from being required in RequireDescendants()
-]]
-script:SetAttribute(FORMATTED_UUID, FORMATTED_UUID)
-ModuleContainerModuleScript:SetAttribute(FORMATTED_UUID, FORMATTED_UUID)
 
 local function GetDictionaryMemberValue(dictionary: { [string]: any }, memberName: string)
     return dictionary[memberName]
@@ -84,12 +74,12 @@ local function RequireDescendants(descendants: { Instance }, isShared: boolean?)
     for i = 1, #descendants do
         local descendant = descendants[i]
         local descendantName = descendant.Name
-        -- To prevent this module loader from requiring itself, compare its attributes
-        if descendant:GetAttribute(FORMATTED_UUID) == script:GetAttribute(FORMATTED_UUID) then
+        -- To prevent this module loader from requiring itself, ignore the descendant
+        if descendant == script then
             continue
         end
-        -- To prevent this module loader from requiring the module container, compare its attributes
-        if descendant:GetAttribute(FORMATTED_UUID) == ModuleContainerModuleScript:GetAttribute(FORMATTED_UUID) then
+        -- To prevent this module loader from requiring the module container, ignore the descendant
+        if descendant == ModuleContainerModuleScript then
             continue
         end
         if descendant:IsA("ModuleScript") then
@@ -116,8 +106,6 @@ local function RequireDescendants(descendants: { Instance }, isShared: boolean?)
         end
         StoreModule(descendantName, valueModule, isShared)
     end
-    script:SetAttribute(FORMATTED_UUID, nil)
-    ModuleContainerModuleScript:SetAttribute(FORMATTED_UUID, nil)
     if isShared == true then
         return shared
     end
