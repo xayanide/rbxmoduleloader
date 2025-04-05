@@ -56,10 +56,9 @@ The `ModuleLoaderOptions` table allows you to configure the loader's behavior. T
   - `Description`: Determines if the loaded modules should be stored in the shared table (accessible globally) or in an isolated container (child of rbxmoduleloader "ModuleContainer"). When `isShared` is true, the modules are stored in the global shared table, meaning they can be accessed anywhere in the game depending on the runtime context.
 
 **Example Usage:**
-This will load all ModuleScripts inside `ReplicatedStorage`.
 
 >[!NOTE] For this example, write this as a `LocalScript` inside `StarterPlayer -> StarterPlayerScripts`
-
+> This will load all ModuleScripts inside `ReplicatedStorage`.
 ```lua
 local ReplicatedStorageService = game:GetService("ReplicatedStorage")
 local loadModules = require(ReplicatedStorageService.MainModule)
@@ -76,10 +75,9 @@ loadModules({ isShared = true })
     - ReplicatedStorage
 
 **Example Usage:**
-This will load all ModuleScripts inside `ServerScriptService` and `ServerStorage`.
 
 >[!NOTE] For this example, write this as a `Server Script` in `ServerScriptService`
-
+> This will load all ModuleScripts inside `ServerScriptService` and `ServerStorage`.
 ```lua
 local ReplicatedStorageService = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
