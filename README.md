@@ -216,7 +216,7 @@ end
 
 return {
     onModuleSetup = ModuleOnModuleSetup,
-    onModuleStart = OnModuleStart,
+    onModuleStart = ModuleOnModuleStart,
 }
 ```
 
