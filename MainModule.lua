@@ -71,7 +71,6 @@ end
 local function RequireDescendants(descendants: { Instance }, isShared: boolean?)
     for i = 1, #descendants do
         local descendant = descendants[i]
-        local descendantName = descendant.Name
         -- To prevent this module loader from requiring itself, ignore the descendant
         if descendant == script then
             continue
@@ -80,6 +79,7 @@ local function RequireDescendants(descendants: { Instance }, isShared: boolean?)
         if descendant == ModuleContainerModuleScript then
             continue
         end
+        local descendantName = descendant.Name
         if descendant:IsA("ModuleScript") then
             local descendantModule = RequireModule(descendant)
             if descendantModule == nil then
