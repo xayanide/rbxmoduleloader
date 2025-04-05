@@ -1,4 +1,4 @@
-# rbxmoduleloader
+# rbxmoduleloadermodule
 A module that loads and executes ModuleScripts from either ServerScriptService or ReplicatedStorage and stores it into global variable "shared" with its contents depend on runtime context (Client or Server).
 
 - Loads modules dynamically, only when needed.
