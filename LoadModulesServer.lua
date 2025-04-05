@@ -4,4 +4,4 @@ Create a "Script" in ReplicatedStorage and set its RunContext to Server so that 
 Copy and paste, enable this script and update require path if needed.
 ]]
 local ReplicatedStorageService = game:GetService("ReplicatedStorage")
-require(ReplicatedStorageService.MainModule)({ isShared = false })
+require(ReplicatedStorageService.MainModule)()
