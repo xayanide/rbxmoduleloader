@@ -1,13 +1,19 @@
 # rbxmoduleloader
 A module that loads and executes ModuleScripts from either ServerScriptService or ReplicatedStorage and stores it into global variable "shared" with its contents depend on runtime context (Client or Server).
 
-Features:
 - Loads modules dynamically, only when needed.
+
 - Loaded ModuleScripts implement lifecycle methods (hooks): `onModuleSetup` (synchronous) and `onModuleStart` (asynchronous).
+
 - Follows a specific design pattern when making ModuleScripts for the Client or Server but doesn't dictate the way you script.
+
 - Allows for both global (`shared`) and local (`ModuleContainer`) module storage, depending on whether the module should be available globally or locally.
+
 - Allows only loading module scripts from specific Instance's descendants.
+
 - Uses `xpcall` and `pcall` for safe module requiring, prevents the module loader from failing, with error handling that logs any failures to load modules.
+
+- Supports loading `ObjectValue` instances that point to `ModuleScript` instances.
 
 ## Prerequisites
 
