@@ -119,6 +119,7 @@ local function RequireDescendants(descendants: { Instance }, isShared: boolean?)
     script:SetAttribute(FORMATTED_UUID, nil)
     ModuleContainerModuleScript:SetAttribute(FORMATTED_UUID, nil)
     if isShared == true then
+        -- Since we're using shared global variable, there's no use for the module container
         ModuleContainerModuleScript:Destroy()
         return shared
     end
