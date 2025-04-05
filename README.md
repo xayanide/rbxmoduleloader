@@ -22,8 +22,9 @@ To use the `rbxmoduleloader` **stock**, you will need to call it with no options
 Create a `Script` in `ReplicatedStorage` and set its `RunContext` to `Client` so that it'll run in `ReplicatedStorage`.
 Copy and paste, enable this script and update require path if needed.
 
->[!NOTE]
-> You can rewrite this below as a one-liner since the Script only exists for one purpose: Loading modules.
+> [!NOTE]
+> You can rewrite this below as a one-liner since the `Script` only exists for one purpose: Loading modules.
+
 ```lua
 --!strict
 local ReplicatedStorageService = game:GetService("ReplicatedStorage")
@@ -36,8 +37,9 @@ Take note of its RunContext: `Client`. This will load the modules found in `Repl
 Similarly, create a `Script` in `ReplicatedStorage` and set its `RunContext` to `Server` so that it'll run in `ReplicatedStorage`.
 Copy and paste, enable this script and update require path if needed.
 
->[!NOTE]
-> You can rewrite this below as a one-liner since the Script only exists for one purpose: Loading modules.
+> [!NOTE]
+> You can rewrite this below as a one-liner since the `Script` only exists for one purpose: Loading modules.
+
 ```lua
 --!strict
 local ReplicatedStorageService = game:GetService("ReplicatedStorage")
@@ -57,8 +59,10 @@ The `ModuleLoaderOptions` table allows you to configure the loader's behavior. T
 
 **Example Usage:**
 
->[!NOTE] For this example, write this as a `LocalScript` inside `StarterPlayer -> StarterPlayerScripts`
+>[!NOTE]
+> For this example, write this as a `LocalScript` inside `StarterPlayer -> StarterPlayerScripts`
 > This will load all ModuleScripts inside `ReplicatedStorage`.
+
 ```lua
 local ReplicatedStorageService = game:GetService("ReplicatedStorage")
 local loadModules = require(ReplicatedStorageService.MainModule)
@@ -76,8 +80,10 @@ loadModules({ isShared = true })
 
 **Example Usage:**
 
->[!NOTE] For this example, write this as a `Server Script` in `ServerScriptService`
+> [!NOTE]
+> For this example, write this as a `Server Script` in `ServerScriptService`
 > This will load all ModuleScripts inside `ServerScriptService` and `ServerStorage`.
+
 ```lua
 local ReplicatedStorageService = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
