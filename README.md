@@ -85,7 +85,7 @@ For more information about the design patterns, please see [lifecycle methods](#
 
 ## Configuration
 
-The `ModuleLoaderOptions` table allows you to configure the loader's behavior. This is passed as an argument to the `rbxmoduleloader` function when you require it.
+The `ModuleLoaderOptions` table allows you to configure the loader's behavior. This can be omitted or passed as an argument to the `rbxmoduleloader` function when you require it.
 
 `isShared` (optional)
   - `Type`: boolean?
