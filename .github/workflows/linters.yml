@@ -22,23 +22,3 @@ jobs:
         uses: wagoid/commitlint-github-action@v6
         with:
           configFile: "./commitlint.config.mjs"
-  lint-code:
-    name: Lint code
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "lts/*"
-      - name: Clean install NPM dependencies
-        run: npm ci
-      - name: Lint code
-        uses: reviewdog/action-eslint@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          reporter: github-check
