@@ -137,8 +137,18 @@ The loader supports two lifecycle methods that will be invoked in this order on 
 
 With that in mind, `ModuleScripts` for both the Client and Server should follow the design pattern:
 
-> [!TIP]
-> This is just a shorthand example code for demonstration.
+- The module script returns a table.
+
+- The table contains the keys `onModuleSetup` and `onModuleStart`.
+
+- Each key maps to an anonymous function (closure).
+
+- `onModuleSetup()` and `onModuleStart()` are callable functions exposed by the module.
+
+** Examples ** 
+
+> [!NOTE]
+> These are just shorthand example codes for demonstration.
 
 **1**
 Inline Anonymous Functions
