@@ -36,7 +36,7 @@ Copy and paste, enable this script and update require path if needed.
 local ReplicatedStorageService = game:GetService("ReplicatedStorage")
 require(ReplicatedStorageService.MainModule)()
 ```
-Take note of its RunContext: `Client`. This will load the modules found in `ReplicatedStorage` and store them in the `shared` global variable, making them globally accessible on other client scripts.
+Take note of its RunContext: `Client`. This will load the modules found in `ReplicatedStorage` and store them in the `shared` global variable, making them globally accessible on other kinds of scripts for the client.
 
 2. Make a `ModuleScript` inside `ReplicatedStorage` that follows the design pattern:
 
@@ -64,7 +64,7 @@ Copy and paste, enable this script and update require path if needed.
 local ReplicatedStorageService = game:GetService("ReplicatedStorage")
 require(ReplicatedStorageService.MainModule)()
 ```
-Take note of its RunContext: `Server`. This will load the modules found in `ServerScriptService` and store them in the `shared` global variable, making them globally accessible on other server scripts.
+Take note of its RunContext: `Server`. This will load the modules found in `ServerScriptService` and store them in the `shared` global variable, making them globally accessible on other kinds of scripts for the server.
 
 4. Make a `ModuleScript` inside `ServerScriptService` that follows the design pattern:
 
@@ -79,7 +79,14 @@ return {
 }
 ```
 
-5. Done!
+5. Try running the game! You should see a similar output on console:
+```lua
+  x:x:x  onModuleSetup: ModuleScript  -  Server - ModuleScript:3
+  x:x:x  onModuleStart: ModuleScript  -  Server - ModuleScript:6
+  x:x:x  onModuleSetup: ModuleScript  -  Client - ModuleScript:3
+  x:x:x  onModuleStart: ModuleScript  -  Client - ModuleScript:6
+
+```
 
 For more information about the design patterns, please see [lifecycle methods](#lifecycle-methods)
 
