@@ -1,7 +1,7 @@
 --!strict
 --[[
 VERSION: v1.0.0
-RBXModuleLoader by xayanide (862645934) @ April 3, 2025 UTC+8
+rbxmoduleloader by xayanide (862645934) @ April 3, 2025 UTC+8
 This module is meant to only have simple features with the least overhead and complexity
 ]]
 local HttpService = game:GetService("HttpService")
