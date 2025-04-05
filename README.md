@@ -190,15 +190,71 @@ return module
 ```lua
 local module = {}
 
-local onModuleSetup, onModuleStart
-
-onModuleSetup = function()
+local function ModuleOnModuleSetup()
     print("onModuleSetup: " .. script.Name)
 end
 
-onModuleStart = function()
+local function ModuleOnModuleStart()
     print("onModuleStart: " .. script.Name)
 end
 
+module.onModuleSetup = ModuleOnModuleSetup
+module.onModuleStart = ModuleOnModuleStart
 return module
+```
+
+**5**
+
+```lua
+local function ModuleOnModuleSetup()
+    print("onModuleSetup: " .. script.Name)
+end
+
+local function ModuleOnModuleStart()
+    print("onModuleStart: " .. script.Name)
+end
+
+return {
+    onModuleSetup = ModuleOnModuleSetup,
+    onModuleStart = OnModuleStart,
+}
+```
+
+**6**
+
+```lua
+local module = {}
+
+local ModuleOnModuleSetup, ModuleOnModuleStart
+
+ModuleOnModuleSetup = function()
+    print("onModuleSetup: " .. script.Name)
+end
+
+ModuleOnModuleStart = function()
+    print("onModuleStart: " .. script.Name)
+end
+
+module.onModuleSetup = ModuleOnModuleSetup
+module.onModuleStart = ModuleOnModuleStart
+return module
+```
+
+**7**
+
+```lua
+local ModuleOnModuleSetup, ModuleOnModuleStart
+
+ModuleOnModuleSetup = function()
+    print("onModuleSetup: " .. script.Name)
+end
+
+ModuleOnModuleStart = function()
+    print("onModuleStart: " .. script.Name)
+end
+
+return {
+    onModuleSetup = ModuleOnModuleSetup,
+    onModuleStart = ModuleOnModuleStart,
+}
 ```
