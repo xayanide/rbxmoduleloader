@@ -174,7 +174,7 @@ local function GetResolvedOptions(options: ModuleLoaderOptions)
     return DEFAULT_MODULE_LOADER_OPTIONS
 end
 
-return function(options: ModuleLoaderOptions)
+local function LoadModules(options: ModuleLoaderOptions)
     -- Synchronous and Serial.
     local userOptions = GetResolvedOptions(options)
     local descendants = GetDescendantsForRequire(userOptions.targetInstances)
@@ -184,3 +184,5 @@ return function(options: ModuleLoaderOptions)
     -- Asynchronous and Concurrent. Anything that yields in the module scripts will not block the main execution flow.
     ExecuteDictionaryMethods(requiredModules, START_LIFECYCLE_METHOD_NAME, true)
 end
+
+return LoadModules
