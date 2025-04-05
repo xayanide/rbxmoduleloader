@@ -70,10 +70,10 @@ local function StoreModule(descendantName: string, requiredModule: { [string]: a
 end
 
 local function RequireModule(moduleScript: ModuleScript)
-    local function onError(err)
+    local function onRequireError(err)
         warn("Unable to load " .. moduleScript.Name .. ":", err)
     end
-    local success, value = xpcall(require, onError, moduleScript)
+    local success, value = xpcall(require, onRequireError, moduleScript)
     if success == false then
         return nil
     end
