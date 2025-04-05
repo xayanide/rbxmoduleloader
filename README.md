@@ -98,7 +98,7 @@ loadModules({
 ## Lifecycle Methods
 
 The loader supports two lifecycle methods that will be invoked in this order on the modules after they are loaded (required):
-1. `onModuleSetup`: () -> ()
+1. `onModuleSetup()`: () -> ()
     - `Description`: This method is called synchronously for each module after it is loaded.
     - `Purpose`: Use this to perform setup tasks on the module, like initializing variables or setting properties.
 
