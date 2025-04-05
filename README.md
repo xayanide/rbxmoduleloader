@@ -140,6 +140,9 @@ With that in mind, `ModuleScripts` for both the Client and Server should follow 
 > [!TIP]
 > This is just a shorthand example code for demonstration.
 
+**1**
+Inline Anonymous Functions
+
 ```lua
 return {
     onModuleSetup = function()
@@ -151,9 +154,10 @@ return {
 }
 ```
 
-Here are other verbose versions of writing the same pattern:
+Here are other verbose versions of writing but follows the design pattern:
 
 **2**
+Assigned Anonymous Functions
 
 ```lua
 local module = {}
@@ -170,6 +174,7 @@ return module
 ```
 
 **3**
+Syntactic Sugar: Named Table Functions
 
 ```lua
 local module = {}
@@ -186,6 +191,7 @@ return module
 ```
 
 **4**
+Local Named Functions then Assigned
 
 ```lua
 local module = {}
@@ -204,6 +210,7 @@ return module
 ```
 
 **5**
+Named Locals, Returned in Table
 
 ```lua
 local function ModuleOnModuleSetup()
@@ -221,6 +228,7 @@ return {
 ```
 
 **6**
+Local Variables with Anonymous Functions
 
 ```lua
 local module = {}
@@ -241,6 +249,7 @@ return module
 ```
 
 **7**
+Local Variables with Anonymous Functions but now embedded in a table.
 
 ```lua
 local ModuleOnModuleSetup, ModuleOnModuleStart
