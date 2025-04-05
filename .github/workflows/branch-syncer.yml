@@ -2,7 +2,7 @@ name: BranchSyncer
 on:
   workflow_run:
     workflows:
-      - Releaser
+      - Linters
     types:
       - completed
     branches:
