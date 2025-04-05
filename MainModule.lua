@@ -28,7 +28,7 @@ local START_LIFECYCLE_METHOD_NAME = "onModuleStart"
 local isServerRuntimeEnvironment = RunService:IsServer()
 
 local ModuleContainerModuleScript = script.ModuleContainer
-local containerDictionary = REQUIRE(ModuleContainerModuleScript)
+local localDictionary = REQUIRE(ModuleContainerModuleScript)
 
 --[[
 Since scripts can have similar names, use UUID and attributes as a reliable distinguisher at runtime
@@ -66,7 +66,7 @@ local function StoreModule(descendantName: string, requiredModule: { [string]: a
         shared[descendantName] = requiredModule
         return
     end
-    containerDictionary[descendantName] = requiredModule
+    localDictionary[descendantName] = requiredModule
 end
 
 local function RequireModule(moduleScript: ModuleScript)
@@ -123,7 +123,7 @@ local function RequireDescendants(descendants: { Instance }, isShared: boolean?)
         ModuleContainerModuleScript:Destroy()
         return shared
     end
-    return containerDictionary
+    return localDictionary
 end
 
 local function GetServiceByRuntimeEnvironment(isServer: boolean)
