@@ -145,7 +145,7 @@ With that in mind, instead of using `LocalScripts` or `Scripts`, use `ModuleScri
 
 - `onModuleSetup()` and `onModuleStart()` are callable functions exposed by the module.
 
-** Examples ** 
+**ModuleScript Examples**
 
 > [!NOTE]
 > These are just shorthand example codes for demonstration.
