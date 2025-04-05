@@ -11,6 +11,7 @@ Features:
 
 ## Prerequisites
 
+- Roblox Player
 - Roblox Studio
 
 ## Usage
