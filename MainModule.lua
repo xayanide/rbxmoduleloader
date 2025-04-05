@@ -15,7 +15,6 @@ export type ModuleLoaderOptions = {
 
 -- This aliasing is for to avoid a type error: Type Error: Unknown require: unsupported path
 local REQUIRE = require
-
 local DEFAULT_MODULE_LOADER_OPTIONS = {
     isShared = true,
 }
@@ -23,7 +22,6 @@ local SETUP_LIFECYCLE_METHOD_NAME = "onModuleSetup"
 local START_LIFECYCLE_METHOD_NAME = "onModuleStart"
 
 local isServerRuntimeEnvironment = RunService:IsServer()
-
 local ModuleContainerModuleScript = script.ModuleContainer
 local localDictionary = REQUIRE(ModuleContainerModuleScript)
 
