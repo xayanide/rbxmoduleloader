@@ -135,7 +135,7 @@ The loader supports two lifecycle methods that will be invoked in this order on 
     - `Description`: This method is called asynchronously for each module after the setup phase.
     - `Purpose`: Use this to trigger the start of the module, such as initiating processes that may involve waiting or other asynchronous tasks.
 
-With that in mind, `ModuleScripts` for both the Client and Server should follow the design pattern:
+With that in mind, instead of using `LocalScripts` or `Scripts`, use `ModuleScripts` for both the Client or Server that follows the design pattern:
 
 - The module script returns a table.
 
