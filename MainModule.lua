@@ -52,7 +52,7 @@ local function executeDictionaryMethods(dictionary: { [string]: { [string]: any 
 end
 
 local function storeModule(descendantName: string, requiredModule: { [string]: any }, isShared: boolean?)
-    if isShared == true then
+    if isShared then
         shared[descendantName] = requiredModule
         return
     end
@@ -61,7 +61,7 @@ end
 
 local function requireModule(moduleScript: ModuleScript)
     local function onRequireError(err)
-        warn("Unable to load " .. moduleScript.Name .. ":", err)
+        warn("Unable to require " .. moduleScript.Name .. ":", err)
     end
     local success, value = xpcall(_require, onRequireError, moduleScript)
     if success == false then
@@ -106,7 +106,7 @@ local function requireDescendants(descendants: { Instance }, isShared: boolean?)
         end
         storeModule(descendantName, valueModule, isShared)
     end
-    if isShared == true then
+    if isShared then
         return shared
     end
     return localDictionary
