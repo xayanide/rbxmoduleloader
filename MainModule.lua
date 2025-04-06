@@ -13,8 +13,6 @@ export type ModuleLoaderOptions = {
     targetInstances: { Instance }?,
 }?
 
--- This aliasing is for to avoid a type error: Type Error: Unknown require: unsupported path
-local REQUIRE = require
 local DEFAULT_MODULE_LOADER_OPTIONS = {
     isShared = true,
 }
@@ -23,7 +21,12 @@ local START_LIFECYCLE_METHOD_NAME = "onModuleStart"
 
 local isServerRuntimeEnvironment = RunService:IsServer()
 local ModuleContainerModuleScript = script.ModuleContainer
-local localDictionary = REQUIRE(ModuleContainerModuleScript)
+
+-- This aliasing is for to avoid a type error: Type Error: Unknown require: unsupported path
+local _require = require
+
+local taskDefer = task.defer
+local localDictionary = _require(ModuleContainerModuleScript)
 
 local function GetDictionaryMemberValue(dictionary: { [string]: any }, memberName: string)
     return dictionary[memberName]
@@ -42,7 +45,7 @@ local function ExecuteDictionaryMethods(dictionary: { [string]: { [string]: any 
             continue
         end
         if isTaskDeferred == true then
-            task.defer(method)
+            taskDefer(method)
             continue
         end
         method()
@@ -61,7 +64,7 @@ local function RequireModule(moduleScript: ModuleScript)
     local function onRequireError(err)
         warn("Unable to load " .. moduleScript.Name .. ":", err)
     end
-    local success, value = xpcall(require, onRequireError, moduleScript)
+    local success, value = xpcall(_require, onRequireError, moduleScript)
     if success == false then
         return nil
     end
