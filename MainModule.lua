@@ -8,36 +8,35 @@ local RunService = game:GetService("RunService")
 local ServerScriptService = game:GetService("ServerScriptService")
 local ReplicatedStorageService = game:GetService("ReplicatedStorage")
 
-export type ModuleLoaderOptions = {
+export type LoadModulesOptions = {
     isShared: boolean?,
     targetInstances: { Instance }?,
 }?
 
-local DEFAULT_MODULE_LOADER_OPTIONS = {
+local DEFAULT_LOAD_MODULES_OPTIONS = {
     isShared = true,
 }
 local SETUP_LIFECYCLE_METHOD_NAME = "onModuleSetup"
 local START_LIFECYCLE_METHOD_NAME = "onModuleStart"
 
-local isServerRuntimeEnvironment = RunService:IsServer()
-local ModuleContainerModuleScript = script.ModuleContainer
-
 -- This aliasing is for to avoid a type error: Type Error: Unknown require: unsupported path
 local _require = require
 
+local isServerRuntimeEnvironment = RunService:IsServer()
 local taskDefer = task.defer
+local ModuleContainerModuleScript = script.ModuleContainer
 local localDictionary = _require(ModuleContainerModuleScript)
 
-local function GetDictionaryMemberValue(dictionary: { [string]: any }, memberName: string)
+local function getDictionaryMemberValue(dictionary: { [string]: any }, memberName: string)
     return dictionary[memberName]
 end
 
-local function ExecuteDictionaryMethods(dictionary: { [string]: { [string]: any } | any }, methodName: string, isTaskDeferred: boolean)
+local function executeDictionaryMethods(dictionary: { [string]: { [string]: any } | any }, methodName: string, isTaskDeferred: boolean)
     for _, value in pairs(dictionary) do
         if typeof(value) ~= "table" then
             continue
         end
-        local success, method = pcall(GetDictionaryMemberValue, value, methodName)
+        local success, method = pcall(getDictionaryMemberValue, value, methodName)
         if success == false then
             continue
         end
@@ -52,7 +51,7 @@ local function ExecuteDictionaryMethods(dictionary: { [string]: { [string]: any 
     end
 end
 
-local function StoreModule(descendantName: string, requiredModule: { [string]: any }, isShared: boolean?)
+local function storeModule(descendantName: string, requiredModule: { [string]: any }, isShared: boolean?)
     if isShared == true then
         shared[descendantName] = requiredModule
         return
@@ -60,7 +59,7 @@ local function StoreModule(descendantName: string, requiredModule: { [string]: a
     localDictionary[descendantName] = requiredModule
 end
 
-local function RequireModule(moduleScript: ModuleScript)
+local function requireModule(moduleScript: ModuleScript)
     local function onRequireError(err)
         warn("Unable to load " .. moduleScript.Name .. ":", err)
     end
@@ -71,7 +70,7 @@ local function RequireModule(moduleScript: ModuleScript)
     return value
 end
 
-local function RequireDescendants(descendants: { Instance }, isShared: boolean?)
+local function requireDescendants(descendants: { Instance }, isShared: boolean?)
     for i = 1, #descendants do
         local descendant = descendants[i]
         -- To prevent this module loader from requiring itself, ignore the descendant
@@ -84,11 +83,11 @@ local function RequireDescendants(descendants: { Instance }, isShared: boolean?)
         end
         local descendantName = descendant.Name
         if descendant:IsA("ModuleScript") then
-            local descendantModule = RequireModule(descendant)
+            local descendantModule = requireModule(descendant)
             if descendantModule == nil then
                 continue
             end
-            StoreModule(descendantName, descendantModule, isShared)
+            storeModule(descendantName, descendantModule, isShared)
             continue
         end
         if not descendant:IsA("ObjectValue") then
@@ -101,11 +100,11 @@ local function RequireDescendants(descendants: { Instance }, isShared: boolean?)
         if not value:IsA("ModuleScript") then
             continue
         end
-        local valueModule = RequireModule(value)
+        local valueModule = requireModule(value)
         if valueModule == nil then
             continue
         end
-        StoreModule(descendantName, valueModule, isShared)
+        storeModule(descendantName, valueModule, isShared)
     end
     if isShared == true then
         return shared
@@ -113,14 +112,14 @@ local function RequireDescendants(descendants: { Instance }, isShared: boolean?)
     return localDictionary
 end
 
-local function GetServiceByRuntimeEnvironment(isServer: boolean)
+local function getServiceByRuntimeEnvironment(isServer: boolean)
     if isServer then
         return ServerScriptService
     end
     return ReplicatedStorageService
 end
 
-local function GetTargetInstancesDescendants(targetInstances: { Instance })
+local function getTargetInstancesDescendants(targetInstances: { Instance })
     local descendants = {}
     local nextIndex = 1
     for targetIndex = 1, #targetInstances do
@@ -137,39 +136,38 @@ local function GetTargetInstancesDescendants(targetInstances: { Instance })
     return descendants
 end
 
-local function GetDescendantsForRequire(targetInstances: { Instance }?)
+local function getDescendantsForRequire(targetInstances: { Instance }?)
     if targetInstances == nil then
-        local Service = GetServiceByRuntimeEnvironment(isServerRuntimeEnvironment)
+        local Service = getServiceByRuntimeEnvironment(isServerRuntimeEnvironment)
         return Service:GetDescendants()
     end
     if typeof(targetInstances) ~= "table" then
         error("Invalid value passed for option 'targetInstances'. Must be an array of Instances.")
     end
-    return GetTargetInstancesDescendants(targetInstances)
+    return getTargetInstancesDescendants(targetInstances)
 end
 
-local function GetResolvedOptions(options: ModuleLoaderOptions)
-    local hasOptions = options ~= nil
-    if hasOptions and typeof(options) ~= "table" then
+local function getResolvedOptions(options: LoadModulesOptions)
+    if options and typeof(options) ~= "table" then
         error("Invalid value passed for 'options'. Must be an table.")
     end
-    if hasOptions then
+    if options then
         local isShared = options.isShared
-        options.isShared = if isShared == nil then DEFAULT_MODULE_LOADER_OPTIONS.isShared else isShared
+        options.isShared = if isShared == nil then DEFAULT_LOAD_MODULES_OPTIONS.isShared else isShared
         return options
     end
-    return DEFAULT_MODULE_LOADER_OPTIONS
+    return DEFAULT_LOAD_MODULES_OPTIONS
 end
 
-local function LoadModules(options: ModuleLoaderOptions)
+local function loadModules(options: LoadModulesOptions)
     -- Synchronous and Serial.
-    local userOptions = GetResolvedOptions(options)
-    local descendants = GetDescendantsForRequire(userOptions.targetInstances)
-    local requiredModules = RequireDescendants(descendants, userOptions.isShared)
+    local userOptions = getResolvedOptions(options)
+    local descendants = getDescendantsForRequire(userOptions.targetInstances)
+    local requiredModules = requireDescendants(descendants, userOptions.isShared)
     -- Synchronous and Serial. Anything that yields in the module scripts will block the main execution flow.
-    ExecuteDictionaryMethods(requiredModules, SETUP_LIFECYCLE_METHOD_NAME, false)
+    executeDictionaryMethods(requiredModules, SETUP_LIFECYCLE_METHOD_NAME, false)
     -- Asynchronous and Concurrent. Anything that yields in the module scripts will not block the main execution flow.
-    ExecuteDictionaryMethods(requiredModules, START_LIFECYCLE_METHOD_NAME, true)
+    executeDictionaryMethods(requiredModules, START_LIFECYCLE_METHOD_NAME, true)
 end
 
-return LoadModules
+return loadModules
