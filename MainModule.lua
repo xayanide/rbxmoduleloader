@@ -27,6 +27,17 @@ local taskDefer = task.defer
 local ModuleContainerModuleScript = script.ModuleContainer
 local localDictionary = _require(ModuleContainerModuleScript)
 
+local function executeMethod(methodFn: () -> (), isTaskDeferred: boolean, methodName: string)
+    local function onLifecycleMethodError(err)
+        warn("Encountered error during " .. methodName .. " lifecycle execution:", err)
+    end
+    if isTaskDeferred then
+        taskDefer(xpcall, methodFn, onLifecycleMethodError)
+        return
+    end
+    xpcall(methodFn, onLifecycleMethodError)
+end
+
 local function getDictionaryMemberValue(dictionary: { [string]: any }, memberName: string)
     return dictionary[memberName]
 end
@@ -36,18 +47,15 @@ local function executeDictionaryMethods(dictionary: { [string]: { [string]: any 
         if typeof(value) ~= "table" then
             continue
         end
-        local success, method = pcall(getDictionaryMemberValue, value, methodName)
+        local success, methodFn = pcall(getDictionaryMemberValue, value, methodName)
+        -- Dictionary may be a metatable-controlled object that raises an error when indexed, avoid calling the method
         if success == false then
             continue
         end
-        if typeof(method) ~= "function" then
+        if typeof(methodFn) ~= "function" then
             continue
         end
-        if isTaskDeferred == true then
-            taskDefer(method)
-            continue
-        end
-        method()
+        executeMethod(methodFn, isTaskDeferred, methodName)
     end
 end
 

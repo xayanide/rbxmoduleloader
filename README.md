@@ -15,6 +15,8 @@ A module that loads and executes ModuleScripts from either ServerScriptService o
 
 - Supports loading modules from `ObjectValue` instances that point to `ModuleScript` instances.
 
+- Errors during lifecycle execution will not halt the module loader
+
 ## Prerequisites
 
 - Roblox Studio
@@ -92,7 +94,7 @@ For more information about the design patterns, please see [lifecycle methods](#
 
 ## Configuration
 
-The `ModuleLoaderOptions` table allows you to configure the loader's behavior. This can be omitted or passed as an argument to the `rbxmoduleloader` function when you require it.
+The `LoadModulesOptions` allows you to configure the loader's behavior. This can be omitted or passed as an argument to the `rbxmoduleloader` function when you require it.
 
 `isShared` (optional)
   - `Type`: boolean?
