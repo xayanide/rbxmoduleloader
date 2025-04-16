@@ -49,7 +49,7 @@ local function executeDictionaryMethods(dictionary: { [string]: { [string]: any 
         end
         local success, methodFn = pcall(getDictionaryMemberValue, value, methodName)
         -- Dictionary may be a metatable-controlled object that raises an error when indexed, avoid calling the method
-        if success == false then
+        if not success then
             continue
         end
         if typeof(methodFn) ~= "function" then
@@ -72,7 +72,7 @@ local function requireModule(moduleScript: ModuleScript)
         warn("Unable to require " .. moduleScript.Name .. ":", err)
     end
     local success, value = xpcall(_require, onRequireError, moduleScript)
-    if success == false then
+    if not success then
         return nil
     end
     return value
@@ -92,7 +92,7 @@ local function requireDescendants(descendants: { Instance }, isShared: boolean?)
         local descendantName = descendant.Name
         if descendant:IsA("ModuleScript") then
             local descendantModule = requireModule(descendant)
-            if descendantModule == nil then
+            if not descendantModule then
                 continue
             end
             storeModule(descendantName, descendantModule, isShared)
@@ -109,7 +109,7 @@ local function requireDescendants(descendants: { Instance }, isShared: boolean?)
             continue
         end
         local valueModule = requireModule(value)
-        if valueModule == nil then
+        if not valueModule then
             continue
         end
         storeModule(descendantName, valueModule, isShared)
@@ -145,7 +145,7 @@ local function getTargetInstancesDescendants(targetInstances: { Instance })
 end
 
 local function getDescendantsForRequire(targetInstances: { Instance }?)
-    if targetInstances == nil then
+    if not targetInstances then
         local Service = getServiceByRuntimeEnvironment(isServerRuntimeEnvironment)
         return Service:GetDescendants()
     end
@@ -161,7 +161,7 @@ local function getResolvedOptions(options: LoadModulesOptions)
     end
     if options then
         local isShared = options.isShared
-        options.isShared = if isShared == nil then DEFAULT_LOAD_MODULES_OPTIONS.isShared else isShared
+        options.isShared = if isShared then isShared else DEFAULT_LOAD_MODULES_OPTIONS.isShared
         return options
     end
     return DEFAULT_LOAD_MODULES_OPTIONS
