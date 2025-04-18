@@ -49,7 +49,7 @@ local function executeDictionaryMethods(dictionary: { [string]: { [string]: any 
         end
         local success, methodFn = pcall(getDictionaryMemberValue, value, methodName)
         -- Dictionary may be a metatable-controlled object that raises an error when indexed, avoid calling the method
-        if not success then
+        if success == false then
             continue
         end
         if typeof(methodFn) ~= "function" then
@@ -72,7 +72,7 @@ local function requireModule(moduleScript: ModuleScript)
         warn("Unable to require " .. moduleScript.Name .. ":", err)
     end
     local success, value = xpcall(_require, onRequireError, moduleScript)
-    if not success then
+    if success == false then
         return nil
     end
     return value
@@ -92,7 +92,7 @@ local function requireDescendants(descendants: { Instance }, isShared: boolean?)
         local descendantName = descendant.Name
         if descendant:IsA("ModuleScript") then
             local descendantModule = requireModule(descendant)
-            if not descendantModule then
+            if descendantModule == nil then
                 continue
             end
             storeModule(descendantName, descendantModule, isShared)
@@ -102,14 +102,14 @@ local function requireDescendants(descendants: { Instance }, isShared: boolean?)
             continue
         end
         local value = descendant.Value
-        if not value then
+        if value == nil then
             continue
         end
         if not value:IsA("ModuleScript") then
             continue
         end
         local valueModule = requireModule(value)
-        if not valueModule then
+        if valueModule == nil then
             continue
         end
         storeModule(descendantName, valueModule, isShared)
@@ -145,7 +145,7 @@ local function getTargetInstancesDescendants(targetInstances: { Instance })
 end
 
 local function getDescendantsForRequire(targetInstances: { Instance }?)
-    if not targetInstances then
+    if targetInstances == nil then
         local Service = getServiceByRuntimeEnvironment(isServerRuntimeEnvironment)
         return Service:GetDescendants()
     end
